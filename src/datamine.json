@@ -1,0 +1,20 @@
+{
+  "channels": [
+    "565665003915575298",
+    "566732434239127556",
+    "568136119947100161",
+    "573634980182228994",
+    "603620760883429376",
+    "607261502004658234",
+    "607319843276062720"
+  ],
+  "current": {
+    "comment": {
+      "url": "https://api.github.com/repos/DJScias/Discord-Datamining/commits/1057e98e27288fae6d100140fd1c72ceb34109f4/comments",
+      "body": "- New experiment: `MOBILE_NUF_PHASE_1: \"2019-08_ios_usecase_choice_nux\"`",
+      "html_url": "https://github.com/DJScias/Discord-Datamining/commit/1057e98e27288fae6d100140fd1c72ceb34109f4#commitcomment-34725214"
+    },
+    "title": "17 August 2019 - 9c2e46c6c2163ec2e565 (Canary build: 43881)",
+    "buildNumber": "43881"
+  }
+}
