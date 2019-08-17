@@ -1,7 +1,7 @@
 const axios = require("axios").default;
 const findStoredCommit = require("./findStoredCommit")
 const parseBuildNumber = require("./parseBuildNumber");
-const writeToDatamine = require(".writeToDatamine");
+const writeToDatamine = require("./writeToDatamine");
 const writeToStorage = require("./writeToStorage");
 
 /**
