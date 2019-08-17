@@ -5,6 +5,7 @@ Pulls from https://github.com/DJScias/Discord-Datamining/ and outputs to multipl
 1) Clone the Repo
 2) Rename `.env.example` to `.env`
 3) Insert bot token and github username into `.env`
+4) Start bot using `node index.js`
 
 ## How to Get Password?
 1) Visit https://github.com/settings/tokens/new
