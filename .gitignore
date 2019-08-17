@@ -59,3 +59,7 @@ typings/
 
 # next.js build output
 .next
+
+# Extra Files
+src/commits.json
+src/datamine.json

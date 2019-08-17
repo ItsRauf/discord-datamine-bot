@@ -12,12 +12,8 @@ const writeToDatamine = require("./src/helpers/writeToDatamine");
 
 async function __init() {
   try {
-    const latestCommit = await getCommits(storage);
-    if (datamine.current.buildNumber !== latestCommit.buildNumber) {
-      datamine.current = latestCommit;
-      const newDatamine = await writeToDatamine(datamine);
-      datamine = newDatamine;
-    }
+    const { latestCommit, newDatamine } = await getCommits(storage, datamine);
+    datamine = newDatamine;
     const channels = datamine.channels;
     channels.forEach(async (channel) => {
       try {

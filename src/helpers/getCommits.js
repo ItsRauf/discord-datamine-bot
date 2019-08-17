@@ -1,15 +1,17 @@
 const axios = require("axios").default;
 const findStoredCommit = require("./findStoredCommit")
 const parseBuildNumber = require("./parseBuildNumber");
+const writeToDatamine = require(".writeToDatamine");
 const writeToStorage = require("./writeToStorage");
 
 /**
  * getCommits
  *
+ * @param {*} datamine
  * @param {Array} storage
  * @returns Latest Commit
  */
-module.exports = async (storage) => {
+module.exports = async (storage, datamine) => {
   const RequestOptions = {
     auth: {
       username: process.env.USERNAME,
@@ -40,5 +42,9 @@ module.exports = async (storage) => {
   const title = commitsWithComments[0].commit.message;
   const buildNumber = await parseBuildNumber(title);
   const commitFromStorage = await findStoredCommit(storage, buildNumber);
-  return commitFromStorage;
+
+  datamine.current = commitFromStorage;
+  const newDatamine = await writeToDatamine(datamine);
+
+  return { latestCommit: commitFromStorage, newDatamine };
 }

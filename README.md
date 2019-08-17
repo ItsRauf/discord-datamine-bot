@@ -4,8 +4,10 @@ Pulls from https://github.com/DJScias/Discord-Datamining/ and outputs to multipl
 ## How To Use?
 1) Clone the Repo
 2) Rename `.env.example` to `.env`
-3) Insert bot token and github username into `.env`
-4) Start bot using `node index.js`
+3) Insert bot token, github username, and password into `.env`
+4) Rename `commits.example.json` to `commits.json`
+5) Rename `datamine.example.json` to `datamine.json`
+6) Start bot using `node index.js`
 
 ## How to Get Password?
 1) Visit https://github.com/settings/tokens/new
