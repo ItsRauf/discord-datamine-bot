@@ -1,0 +1,24 @@
+{
+  "name": "discord-datamine-bot",
+  "version": "1.0.0",
+  "description": "Pulls from https://github.com/DJScias/Discord-Datamining/ and outputs to multiple channels",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ItsRauf/discord-datamine-bot.git"
+  },
+  "keywords": [
+    "datamine",
+    "discord",
+    "bot"
+  ],
+  "author": "Rauf",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ItsRauf/discord-datamine-bot/issues"
+  },
+  "homepage": "https://github.com/ItsRauf/discord-datamine-bot#readme"
+}
