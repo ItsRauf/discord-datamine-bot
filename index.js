@@ -24,17 +24,19 @@ async function __init() {
           const regex = /(Canary\sbuild:\s([0-9]*))/;
           const msg = msgsWithEmbed.find((msg) => regex.test(msg.embeds[0].title));
           if (msg.embeds.length <= 0) {
+	    const desc = (latestCommit.comment.body.length > 2000) ? latestCommit.comment.body.substr(0, 2000) + "..." : latestCommit.comment.body
             msg.channel.createMessage({
               embed: {
-                description: latestCommit.comment.body.substr(0, 2000) + "...",
+                description: desc,
                 title: latestCommit.title,
                 url: latestCommit.comment.html_url
               }
             });
-          } else if (msg.embeds[0].title !== datamine.current.title) {
+          } else if (msg.embeds[0].title !== datamine.current.title || msg.embeds[0] !== latestCommit.title) {
             const buildNumber = await parseBuildNumber(msg.embeds[0].title);
             const unsent = filterAndSortUnsentCommits(storage, buildNumber);
             unsent.forEach((unsentCommit) => {
+	      const desc = (unsentCommit.comment.body.length > 2000) ? unsentCommit.comment.body.substr(0, 2000) + "..." : unsentCommit.comment.body
               msg.channel.createMessage({
                 embed: {
                   description: unsentCommit.comment.body.substr(0, 2000) + "...",
