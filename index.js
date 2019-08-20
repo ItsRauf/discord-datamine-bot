@@ -32,7 +32,7 @@ async function __init() {
                 url: latestCommit.comment.html_url
               }
             });
-          } else if (msg.embeds[0].title !== datamine.current.title || msg.embeds[0].title !== latestCommit.title) {
+          } else if (msg.embeds[0].title !== latestCommit.title) {
             const buildNumber = await parseBuildNumber(msg.embeds[0].title);
             const unsent = filterAndSortUnsentCommits(storage, buildNumber);
             unsent.forEach((unsentCommit) => {
