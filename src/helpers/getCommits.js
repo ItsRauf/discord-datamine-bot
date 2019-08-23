@@ -19,7 +19,7 @@ module.exports = async (storage, datamine) => {
     }
   };
   const commits = await axios.get("https://api.github.com/repos/DJScias/Discord-Datamining/commits", RequestOptions);
-  const commitsWithComments = commits.data.filter((commit) => commit.commit.comment_count > 1);
+  const commitsWithComments = commits.data.filter((commit) => commit.commit.comment_count >= 1);
   commitsWithComments.forEach(async (commit) => {
     const storable = {
       comment: {
