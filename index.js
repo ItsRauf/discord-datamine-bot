@@ -23,27 +23,55 @@ async function __init() {
           const msgsWithEmbed = msgsFromBot.filter((msg) => msg.embeds.length > 0);
           const regex = /(Canary\sbuild:\s([0-9]*))/;
           const msg = msgsWithEmbed.find((msg) => regex.test(msg.embeds[0].title));
+          const imageRegex = /!\[image]*\]\((.*?)\s*("(?:.*[^"])")?\s*\)/mg;
+          const imageRegexTwo = /!\[image]*\]\((.*?)\s*("(?:.*[^"])")?\s*\)/m;
           if (msg.embeds.length <= 0) {
-	        const desc = (latestCommit.comment.body.length > 2000) ? latestCommit.comment.body.substr(0, 2000) + "..." : latestCommit.comment.body
-            msg.channel.createMessage({
-              embed: {
-                description: desc,
-                title: latestCommit.title,
-                url: latestCommit.comment.html_url
-              }
-            });
-          } else if (msg.embeds[0].title !== latestCommit.title) {
-            const buildNumber = await parseBuildNumber(msg.embeds[0].title);
-            const unsent = filterAndSortUnsentCommits(storage, buildNumber);
-            unsent.forEach((unsentCommit) => {
-	          const desc = (unsentCommit.comment.body.length > 2000) ? unsentCommit.comment.body.substr(0, 2000) + "..." : unsentCommit.comment.body
+            let desc = latestCommit.comment.body
+              const images = desc.match(imageRegex);
+              console.log(images);
+              const parsedImages = images.map((image) => {
+                return {
+                  old: image,
+                  new: imageRegexTwo.exec(image)[1]
+                }
+              });
+              console.log(parsedImages);
+              parsedImages.map((imageObj) => {
+                desc = desc.replace(imageObj.old, "")
+              })
               msg.channel.createMessage({
                 embed: {
-                  description: desc,
+                  description: (desc.length > 2000) ? desc.substr(0, 2000) + "..." : desc,
                   title: unsentCommit.title,
                   url: unsentCommit.comment.html_url
                 }
               });
+              msg.channel.createMessage(parsedImages.map((imageObj) => imageObj.new).join("\n"));
+          } else if (msg.embeds[0].title !== latestCommit.title) {
+            const buildNumber = await parseBuildNumber(msg.embeds[0].title);
+            const unsent = filterAndSortUnsentCommits(storage, buildNumber);
+            unsent.forEach((unsentCommit) => {
+              let desc = latestCommit.comment.body
+              const images = desc.match(imageRegex);
+              console.log(images);
+              const parsedImages = images.map((image) => {
+                return {
+                  old: image,
+                  new: imageRegexTwo.exec(image)[1]
+                }
+              });
+              console.log(parsedImages);
+              parsedImages.map((imageObj) => {
+                desc = desc.replace(imageObj.old, "")
+              })
+              msg.channel.createMessage({
+                embed: {
+                  description: (desc.length > 2000) ? desc.substr(0, 2000) + "..." : desc,
+                  title: unsentCommit.title,
+                  url: unsentCommit.comment.html_url
+                }
+              });
+              msg.channel.createMessage(parsedImages.map((imageObj) => imageObj.new).join("\n"));
             });
           }
         }
