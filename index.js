@@ -26,19 +26,19 @@ async function __init() {
           const imageRegex = /!\[image]*\]\((.*?)\s*("(?:.*[^"])")?\s*\)/mg;
           const imageRegexTwo = /!\[image]*\]\((.*?)\s*("(?:.*[^"])")?\s*\)/m;
           if (msg.embeds.length <= 0) {
-            let desc = latestCommit.comment.body
+            let desc = latestCommit.comment.body;
               const images = desc.match(imageRegex);
-              console.log(images);
-              const parsedImages = images.map((image) => {
-                return {
-                  old: image,
-                  new: imageRegexTwo.exec(image)[1]
-                }
-              });
-              console.log(parsedImages);
-              parsedImages.map((imageObj) => {
-                desc = desc.replace(imageObj.old, "")
-              })
+              if (Array.isArray(images)) {
+                const parsedImages = images.map((image) => {
+                  return {
+                    old: image,
+                    new: imageRegexTwo.exec(image)[1]
+                  }
+                });
+                parsedImages.map((imageObj) => {
+                  desc = desc.replace(imageObj.old, "")
+                });
+              }
               msg.channel.createMessage({
                 embed: {
                   description: (desc.length > 2000) ? desc.substr(0, 2000) + "..." : desc,
@@ -51,19 +51,19 @@ async function __init() {
             const buildNumber = await parseBuildNumber(msg.embeds[0].title);
             const unsent = filterAndSortUnsentCommits(storage, buildNumber);
             unsent.forEach((unsentCommit) => {
-              let desc = latestCommit.comment.body
+              let desc = latestCommit.comment.body;
               const images = desc.match(imageRegex);
-              console.log(images);
-              const parsedImages = images.map((image) => {
-                return {
-                  old: image,
-                  new: imageRegexTwo.exec(image)[1]
-                }
-              });
-              console.log(parsedImages);
-              parsedImages.map((imageObj) => {
-                desc = desc.replace(imageObj.old, "")
-              })
+              if (Array.isArray(images)) {
+                const parsedImages = images.map((image) => {
+                  return {
+                    old: image,
+                    new: imageRegexTwo.exec(image)[1]
+                  }
+                });
+                parsedImages.map((imageObj) => {
+                  desc = desc.replace(imageObj.old, "")
+                });
+              }
               msg.channel.createMessage({
                 embed: {
                   description: (desc.length > 2000) ? desc.substr(0, 2000) + "..." : desc,
