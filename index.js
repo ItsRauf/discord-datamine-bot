@@ -28,7 +28,7 @@ async function __init() {
           if (msg.embeds.length <= 0) {
             let desc = latestCommit.comment.body;
               const images = desc.match(imageRegex);
-              if (Array.isArray(images)) {
+              if (Array.isArray(images) && images !== []) {
                 const parsedImages = images.map((image) => {
                   return {
                     old: image,
@@ -47,13 +47,13 @@ async function __init() {
                 }
               });
               msg.channel.createMessage(parsedImages.map((imageObj) => imageObj.new).join("\n"));
-          } else if (msg.embeds[0].title !== latestCommit.title) {
+          } else {
             const buildNumber = await parseBuildNumber(msg.embeds[0].title);
             const unsent = filterAndSortUnsentCommits(storage, buildNumber);
             unsent.forEach((unsentCommit) => {
               let desc = latestCommit.comment.body;
               const images = desc.match(imageRegex);
-              if (Array.isArray(images)) {
+              if (Array.isArray(images) && images !== []) {
                 const parsedImages = images.map((image) => {
                   return {
                     old: image,
@@ -71,7 +71,10 @@ async function __init() {
                   url: unsentCommit.comment.html_url
                 }
               });
-              msg.channel.createMessage(parsedImages.map((imageObj) => imageObj.new).join("\n"));
+              // msg.channel.createMessage(parsedImages.map((imageObj) => imageObj.new).join("\n"));
+              if (parsedImages) {
+                msg.channel.createMessage(parsedImages.map((images) => images.new).join("\n"))
+              }
             });
           }
         }
@@ -91,4 +94,4 @@ bot.once("ready", () => {
   setInterval(__init, ms("5m"));
 });
 
-bot.connect();
+bot.connect().catch(() => { console.log("failed to start") });
