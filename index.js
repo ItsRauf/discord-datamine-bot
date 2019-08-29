@@ -27,42 +27,51 @@ async function __init() {
           const imageRegexTwo = /!\[image]*\]\((.*?)\s*("(?:.*[^"])")?\s*\)/m;
           if (msg.embeds.length <= 0) {
             let desc = latestCommit.comment.body;
+            let parsedImages;
               const images = desc.match(imageRegex);
-              if (Array.isArray(images) && images !== []) {
-                const parsedImages = images.map((image) => {
+              if (Array.isArray(images)) {
+                parsedImages = images.map((image) => {
                   return {
                     old: image,
                     new: imageRegexTwo.exec(image)[1]
                   }
                 });
-                parsedImages.map((imageObj) => {
-                  desc = desc.replace(imageObj.old, "")
-                });
+                if (Array.isArray(parsedImages) && parsedImages !== undefined) {
+                  parsedImages.map((imageObj) => {
+                    desc = desc.replace(imageObj.old, "")
+                  });
+                }
               }
               msg.channel.createMessage({
                 embed: {
                   description: (desc.length > 2000) ? desc.substr(0, 2000) + "..." : desc,
-                  title: unsentCommit.title,
-                  url: unsentCommit.comment.html_url
+                  title: latestCommit.title,
+                  url: latestCommit.comment.html_url
                 }
               });
-              msg.channel.createMessage(parsedImages.map((imageObj) => imageObj.new).join("\n"));
+              // msg.channel.createMessage(parsedImages.map((imageObj) => imageObj.new).join("\n"));
+              if (Array.isArray(parsedImages) && parsedImages !== undefined) {
+                msg.channel.createMessage(parsedImages.map((images) => images.new).join("\n"));
+              }
           } else {
             const buildNumber = await parseBuildNumber(msg.embeds[0].title);
             const unsent = filterAndSortUnsentCommits(storage, buildNumber);
             unsent.forEach((unsentCommit) => {
-              let desc = latestCommit.comment.body;
+              let desc = unsentCommit.comment.body;
+              let parsedImages;
               const images = desc.match(imageRegex);
-              if (Array.isArray(images) && images !== []) {
-                const parsedImages = images.map((image) => {
+              if (Array.isArray(images)) {
+                parsedImages = images.map((image) => {
                   return {
                     old: image,
                     new: imageRegexTwo.exec(image)[1]
                   }
                 });
-                parsedImages.map((imageObj) => {
-                  desc = desc.replace(imageObj.old, "")
-                });
+                if (Array.isArray(parsedImages) && parsedImages !== undefined) {
+                  parsedImages.map((imageObj) => {
+                    desc = desc.replace(imageObj.old, "")
+                  });
+                }
               }
               msg.channel.createMessage({
                 embed: {
@@ -72,7 +81,7 @@ async function __init() {
                 }
               });
               // msg.channel.createMessage(parsedImages.map((imageObj) => imageObj.new).join("\n"));
-              if (parsedImages) {
+              if (Array.isArray(parsedImages) && parsedImages !== undefined) {
                 msg.channel.createMessage(parsedImages.map((images) => images.new).join("\n"))
               }
             });
