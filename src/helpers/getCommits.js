@@ -32,11 +32,13 @@ module.exports = async (storage, datamine) => {
     if (!commitFromStorage) {
       const comments = await axios.get(storable.comment.url, RequestOptions);
       const commentsByTiemen = comments.data.filter((comment) => comment.user.login === "ThaTiemsz");
-      const comment = commentsByTiemen[0]
-      storable.comment.body = comment.body;
-      storable.comment.html_url = comment.html_url;
-      const storedCommit = await writeToStorage(storage, storable);
-      console.log(`Stored Commit for Build ${storedCommit.commit.buildNumber}`);
+      const comment = commentsByTiemen[0];
+      if (comment) {
+        storable.comment.body = comment.body;
+        storable.comment.html_url = comment.html_url;
+        const storedCommit = await writeToStorage(storage, storable);
+        console.log(`Stored Commit for Build ${storedCommit.commit.buildNumber}`);
+      }
     }
   });
   const title = commitsWithComments[0].commit.message;
